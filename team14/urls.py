@@ -8,4 +8,6 @@ urlpatterns = [
     path('easy/', views.easy_level, name='easy_level'),
     path('medium/', views.mid_level, name='mid_level'),
     path('hard/', views.hard_level, name='hard_level'),
+    path('Exam/', views.Exam_Page, name='Exam_Page'),
+
 ]

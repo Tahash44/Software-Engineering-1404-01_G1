@@ -26,3 +26,8 @@ def mid_level(request):
 
 def hard_level(request):
     return render(request, 'team14/Hard_Level.html')
+
+def Exam_Page(request):
+    return render(request, 'team14/Exam_Page.html')
+
+
