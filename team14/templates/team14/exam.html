@@ -377,6 +377,34 @@
             border-color: #2b6cb0;
             color: white;
         }
+        .exam-timer {
+                background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-size: 18px;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 15px rgba(252, 129, 129, 0.3);
+            }
+
+            .exam-timer::before {
+                content: "⏱️";
+                font-size: 20px;
+            }
+
+            .exam-timer.warning {
+                background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+                animation: pulse 1s infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+
     </style>
 </head>
 <div>
@@ -386,12 +414,14 @@
 
         <!-- Progress Section -->
         <div class="progress-section">
-            <div class="progress-header">
+           <div class="progress-header">
                 <div class="passage-info">
-                    سطح: {{ passage.get_difficulty_level_display }}
-                     {% if is_exam %}
-                        <div id="exam-timer" class="exam-timer"></div>
-                     {% endif %}
+                    <span>سطح: {{ passage.get_difficulty_level_display }}</span>
+                </div>
+
+
+                    <div id="exam-timer" class="exam-timer">30:00</div>
+
                 </div>
                 <div class="question-counter">
                     سوالات پاسخ داده شده:
@@ -461,31 +491,42 @@
     </div>
    <script>
         const IS_EXAM = {{ is_exam|yesno:"true,false" }};
-        let timeLeft = IS_EXAM ? 1800 : {{ time_left }}; // 1800 = 30 دقیقه
+        let timeLeft =  1800 ; // 1800 = 30 دقیقه
    </script>
 
     <script>
-                function startExamTimer() {
-                    const timerEl = document.getElementById("exam-timer");
-                    if (!timerEl) return;
-
-                    const interval = setInterval(() => {
-                        if (timeLeft <= 0) {
-                            clearInterval(interval);
-                            finishExam();
+               function startExamTimer() {
+                        const timerEl = document.getElementById("exam-timer");
+                        if (!timerEl) {
+                            console.error("❌ تایمر پیدا نشد!");
                             return;
                         }
 
-                        const minutes = Math.floor(timeLeft / 60);
-                        const seconds = timeLeft % 60;
+                        console.log("✅ تایمر شروع شد:", timeLeft, "ثانیه");
 
-                        timerEl.innerText =
-                            minutes.toString().padStart(2, '0') + ":" +
-                            seconds.toString().padStart(2, '0');
+                        const interval = setInterval(() => {
+                            if (timeLeft <= 0) {
+                                clearInterval(interval);
+                                finishExam();
+                                return;
+                            }
 
-                        timeLeft--;
-                    }, 1000);
-                }
+                            const minutes = Math.floor(timeLeft / 60);
+                            const seconds = timeLeft % 60;
+
+                            timerEl.textContent =
+                                minutes.toString().padStart(2, '0') + ":" +
+                                seconds.toString().padStart(2, '0');
+
+                            // هشدار ۵ دقیقه آخر
+                            if (timeLeft <= 300 && !timerEl.classList.contains('warning')) {
+                                timerEl.classList.add('warning');
+                            }
+
+                            timeLeft--;
+                        }, 1000);
+                    }
+
 
                function finishExam() {
                         alert("⏰ زمان آزمون به پایان رسید");
@@ -494,9 +535,9 @@
                     }
 
 
-                if (IS_EXAM) {
-                    startExamTimer();
-                }
+<!--                if (IS_EXAM) {-->
+<!--                    startExamTimer();-->
+<!--                }-->
     </script>
 
     <script>
