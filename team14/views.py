@@ -353,7 +353,7 @@ def practice_result(request, session_id):
             "is_correct": is_correct
         })
 
-    return render(request, "team14/exam_result.html", {
+    return render(request, "team14/practice_result.html", {
         "session": session,
         "total_questions": questions.count(),
         "correct_count": correct_count,
@@ -485,8 +485,8 @@ def exam_result(request, session_id):
     # ذخیره نمره در session
     session.total_score = score_out_of_30
     session.save()
-
-    return render(request, "team14/practice_result.html", {
+    wrong_count = total_questions - correct_count
+    return render(request, "team14/exam_result.html", {
         "session": session,
         "total_questions": total_questions,
         "correct_count": correct_count,
@@ -497,6 +497,7 @@ def exam_result(request, session_id):
         "evaluation_title": evaluation_title,
         "evaluation_message": evaluation_message,
         "duration": duration,
+        "wrong_count": wrong_count,
 
     })
 

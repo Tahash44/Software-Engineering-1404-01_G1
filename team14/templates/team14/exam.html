@@ -583,9 +583,8 @@
             });
 
             confirmFinish.addEventListener("click", () => {
-                    const finishUrl = IS_EXAM
-                        ? `{% url 'finish_exam' 0 %}`.replace('/0/', `/${sessionId}/`)
-                        : `{% url 'finish_practice' 0 %}`.replace('/0/', `/${sessionId}/`);
+                    const finishUrl = `{% url 'finish_exam' 0 %}`.replace('/0/', `/${sessionId}/`)
+
 
                     window.location.href = finishUrl;
                     });
