@@ -18,7 +18,7 @@
     }
 
     :root {
-      --primary-blue: #ecf3fd;
+      --primary-blue: #000000;
       --primary-coral: #ff7b7b;
       --light-blue: #a8c7f0;
       --navy: #2c3e50;
@@ -390,11 +390,7 @@
  <!-- Stats Bar -->
     <div class="stats-bar">
       <div class="stat-item">
-        {% if has_taken_exam %}
-      نمره آخرین آزمون:    <span class="stat-value">{{ last_score|floatformat:1 }}/30</span>
-        {% else %}
-      نمره آخرین آزمون:    <span class="stat-value stat-no-exam">—</span>
-        {% endif %}
+      نمره آخرین آزمون:    <span class="stat-value stat-no-exam">15</span>
       </div>
     </div>
 
