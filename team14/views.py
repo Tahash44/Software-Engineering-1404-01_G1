@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from core.auth import api_login_required
 from django.contrib.auth.decorators import login_required
+
+from core.urls import urlpatterns
 from .models import UserSession, Passage, Question, Option
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -157,7 +159,7 @@ def get_topic_icon(topic):
 def Exam_Page(request):
     return render(request, 'team14/Exam_Page.html')
 
-
+@login_required(login_url='/auth/')
 def practice_page(request, passage_id):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -227,7 +229,7 @@ def submit_answer(request):
         session = get_object_or_404(
             UserSession,
             id=data['session_id'],
-            user_id=str(request.user.id)  # ✅ خیلی مهم: اطمینان حاصل کنید که نوع داده یکسان است (Char vs Int)
+            user_id=str(request.user.id)
         )
 
         question = get_object_or_404(
@@ -236,28 +238,24 @@ def submit_answer(request):
             passage=session.passage
         )
 
-        # در اینجا user_id: request.user.id است
-        # اگر در مدل UserAnswer فیلد user_id ندارید و فقط session است
-        # باید بر اساس session و question ایجاد یا به روز کنید
-        # در مدل UserAnswer فقط session و question دارید، نه user_id مستقیم
-        # بنابراین این خط باید اصلاح شود:
-        user_answer, created = UserAnswer.objects.get_or_create(
+        option_id = data.get('option_id')  # ✅ ممکن است None باشد
+
+        # ✅ استفاده از update_or_create برای کد تمیزتر
+        user_answer, created = UserAnswer.objects.update_or_create(
             session=session,
             question=question,
-            defaults={'selected_option_id': data['option_id']}
+            defaults={'selected_option_id': option_id}
         )
 
-        if not created and user_answer.selected_option_id != data['option_id']:
-            user_answer.selected_option_id = data['option_id']
+        # ✅ شمارش تغییرات (فقط اگر تغییر کرده باشد)
+        if not created:
             user_answer.changed_count += 1
-            user_answer.save()
-        elif created and data['option_id'] is None:  # اگر برای null کردن گزینه ارسال شده و تازه ساخته شده
-            user_answer.selected_option = None
-            user_answer.save()
+            user_answer.save(update_fields=['changed_count'])
 
         return JsonResponse({'success': True})
 
     except Exception as e:
+        print(f"❌ Error in submit_answer: {e}")  # ✅ لاگ خطا
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 
@@ -300,16 +298,22 @@ def practice_result(request, session_id):
     session = get_object_or_404(
         UserSession,
         id=session_id,
-        user_id=str(request.user.id)  # ✅ باز هم، اطمینان از نوع داده (char)
+        user_id=str(request.user.id)
     )
 
     questions = Question.objects.filter(
         passage=session.passage
-    ).prefetch_related('options')
+    ).prefetch_related('options').order_by('id')
 
-    answers = {
-        ua.question_id: ua.selected_option_id
-        for ua in UserAnswer.objects.filter(session=session)
+    # ✅ گرفتن تمام پاسخ‌های کاربر به صورت QuerySet
+    user_answers = UserAnswer.objects.filter(
+        session=session
+    ).select_related('selected_option', 'question')
+
+    # ✅ ساخت دیکشنری از پاسخ‌ها (برای دسترسی سریع‌تر)
+    answers_dict = {
+        ua.question_id: ua
+        for ua in user_answers
     }
 
     result_data = []
@@ -317,9 +321,18 @@ def practice_result(request, session_id):
 
     for q in questions:
         correct_option = q.options.filter(is_correct=True).first()
-        user_option_id = answers.get(q.id)
 
-        is_correct = user_option_id == (correct_option.id if correct_option else None)
+        # ✅ گرفتن شیء UserAnswer (نه فقط ID)
+        user_answer = answers_dict.get(q.id)
+
+        # ✅ بررسی وجود پاسخ و selected_option
+        if user_answer and user_answer.selected_option:
+            user_option_text = user_answer.selected_option.text
+            is_correct = user_answer.selected_option.is_correct
+        else:
+            user_option_text = "بدون پاسخ"
+            is_correct = False
+
         if is_correct:
             correct_count += 1
 
@@ -327,11 +340,7 @@ def practice_result(request, session_id):
             "question_id": q.id,
             "question_text": q.question_text,
             "correct_option": correct_option.text if correct_option else "—",
-            "user_option": (
-                q.options.get(id=user_option_id).text
-                if user_option_id and q.options.filter(id=user_option_id).exists()  # اطمینان از وجود گزینه
-                else "بدون پاسخ"
-            ),
+            "user_option": user_option_text,
             "is_correct": is_correct
         })
 
@@ -340,5 +349,12 @@ def practice_result(request, session_id):
         "total_questions": questions.count(),
         "correct_count": correct_count,
         "results": result_data,
-        "level": session.passage.get_difficulty_level_display()  # ✅ اینجا اصلاح شد
+        "level": session.passage.get_difficulty_level_display()
     })
+
+
+def about(request):
+    return None
+def start_learning(request):
+    return None
+

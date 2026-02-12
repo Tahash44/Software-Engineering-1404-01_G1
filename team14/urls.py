@@ -17,4 +17,6 @@ urlpatterns = [
     path('submit-answer/', views.submit_answer, name='submit_answer'),
     path('finish-practice/<int:session_id>/', views.finish_practice, name='finish_practice'),
     path("practice/result/<int:session_id>/", views.practice_result, name="practice_result"),
+    path('about/', views.about, name='about'),
+    path('start_learning/', views.start_learning, name='start_learning'),
 ]

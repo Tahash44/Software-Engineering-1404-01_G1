@@ -25,135 +25,7 @@
             margin: 0 auto;
         }
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
-        }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 24px;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #4a5568;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #667eea;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .icon-button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: #f7fafc;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-
-        .icon-button:hover {
-            background: #e2e8f0;
-            transform: translateY(-2px);
-        }
-
-        /* Progress Bar */
-        .progress-section {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .passage-info {
-            font-size: 14px;
-            color: #718096;
-            font-weight: 500;
-        }
-
-        .question-counter {
-            font-size: 18px;
-            font-weight: 700;
-            color: #2d3748;
-        }
-
-        .progress-dots {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .dot.answered {
-            background: #48bb78;
-        }
-
-        .dot.current {
-            background: #4299e1;
-            transform: scale(1.3);
-        }
 
         /* Main Content */
         .main-content {
@@ -457,26 +329,10 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<div>
+<div class="container">
         <!-- Header -->
-        <header class="header">
-            <div class="user-section">
-                <button class="icon-button">⚙️</button>
-                <button class="icon-button">🇮🇷</button>
-                <button class="icon-button">🔔</button>
-                <button class="icon-button">ورود</button>
-            </div>
-            <nav class="nav-links">
-                <a href="#">درباره ما</a>
-                <a href="{% url 'training_levels' %}">شروع یادگیری</a>
-                <a href="#">خانه</a>
-            </nav>
-            <div class="logo-section">
-                <div class="logo">T</div>
-                <div class="logo-text">TOEFL Master</div>
-            </div>
-        </header>
+{% include 'team14/public/header.html' %}
 
         <!-- Progress Section -->
         <div class="progress-section">
@@ -695,5 +551,6 @@
             renderQuestion();
         });
     </script>
+</div>
 </body>
 </html>

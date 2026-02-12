@@ -42,127 +42,7 @@
       padding: 0 20px;
     }
 
-    /* Header Styles */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 25px 40px;
-      background: var(--white);
-      box-shadow: 0 2px 15px var(--shadow);
-      position: relative;
-      z-index: 100;
-    }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .home-btn {
-      background: var(--white);
-      border: 2px solid var(--primary-blue);
-      color: var(--primary-blue);
-      padding: 10px 30px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      display: inline-block;
-    }
-
-    .home-btn:hover {
-      background: var(--primary-blue);
-      color: var(--white);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(66, 103, 178, 0.3);
-    }
-
-    .flag-settings {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .settings-icon {
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      filter: brightness(0) saturate(100%) invert(37%) sepia(13%) saturate(1089%) hue-rotate(169deg) brightness(93%) contrast(88%);
-    }
-
-    .settings-icon:hover {
-      transform: rotate(45deg);
-    }
-
-    .iran-flag {
-      width: 40px;
-      height: 28px;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px var(--shadow);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .flag-green {
-      flex: 1;
-      background: #239f40;
-    }
-
-    .flag-white {
-      flex: 1;
-      background: #ffffff;
-    }
-
-    .flag-red {
-      flex: 1;
-      background: #da0000;
-    }
-
-    .login-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .login-text {
-      font-weight: 600;
-      color: var(--navy);
-      text-decoration: none;
-      font-size: 16px;
-      transition: color 0.3s ease;
-    }
-
-    .login-text:hover {
-      color: var(--primary-blue);
-    }
-
-    .user-avatar {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: #647eb4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 10px rgba(100, 126, 180, 0.3);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .user-avatar:hover {
-      transform: scale(1.1);
-    }
 
     /* Main Content */
     .main-content {
@@ -457,44 +337,12 @@
 </head>
 
 <body>
+<div class="container">
   <!-- Decorative Background -->
   <div class="bg-decoration bg-decoration-1"></div>
   <div class="bg-decoration bg-decoration-2"></div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-right">
-      <a href="{% url 'microservices' %}" class="home-btn">میکروسرویس‌ها</a>
-    </div>
-
-    <div class="header-left">
-      <div class="flag-settings">
-        <img src="{% static 'team14/public/images/settings.png' %}" alt="" class="settings-icon">
-
-        <div class="iran-flag">
-          <div class="flag-green"></div>
-          <div class="flag-white"></div>
-          <div class="flag-red"></div>
-        </div>
-      </div>
-
-      <div class="login-container">
-        {% if request.user.is_authenticated %}
-          <a href="{% url 'logout' %}" class="login-text">خروج</a>
-        {% else %}
-          <a href="{% url 'auth' %}" class="login-text">ورود</a>
-        {% endif %}
-
-        <div class="user-avatar" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="15" cy="10" r="5" fill="#647eb4" />
-            <path d="M5 25C5 20 9 17 15 17C21 17 25 20 25 25" stroke="#647eb4" stroke-width="2" fill="none" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  </header>
-
+{% include 'team14/public/header.html' %}
   <!-- Main Content -->
   <main class="main-content">
     <div class="title-section">
@@ -551,43 +399,9 @@
     </div>
 
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="support-icon">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="45" r="35" fill="#4267b2" opacity="0.2"/>
-          <path d="M50 25 C35 25 25 35 25 50 C25 57 27 63 30 68 L30 75 L37 72 C41 74 45 75 50 75 C65 75 75 65 75 50 C75 35 65 25 50 25 Z" fill="#4267b2"/>
-          <circle cx="40" cy="48" r="3" fill="white"/>
-          <circle cx="50" cy="48" r="3" fill="white"/>
-          <circle cx="60" cy="48" r="3" fill="white"/>
-          <path d="M35 80 C35 80 30 85 30 90 C30 92 31 93 33 93 L67 93 C69 93 70 92 70 90 C70 85 65 80 65 80" stroke="#4267b2" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <p class="footer-text">ما را در شبکه‌های اجتماعی دنبال کنید !</p>
-      
-      <div class="social-icons">
-        <!-- Telegram Icon -->
-        <div class="social-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.8C16.49 10.38 15.84 14.22 15.51 15.99C15.37 16.74 15.09 16.99 14.83 17.02C14.25 17.07 13.81 16.64 13.25 16.27C12.37 15.69 11.87 15.33 11.02 14.77C10.03 14.12 10.67 13.76 11.24 13.18C11.39 13.03 13.95 10.7 14 10.49C14.0069 10.4582 14.006 10.4252 13.9973 10.3938C13.9886 10.3624 13.9724 10.3337 13.95 10.31C13.89 10.26 13.81 10.28 13.74 10.29C13.65 10.31 12.25 11.24 9.52 13.08C9.12 13.35 8.76 13.49 8.44 13.48C8.08 13.47 7.4 13.28 6.89 13.11C6.26 12.91 5.77 12.8 5.81 12.45C5.83 12.27 6.08 12.09 6.55 11.9C9.47 10.63 11.41 9.79 12.38 9.39C15.16 8.23 15.73 8.03 16.11 8.03C16.19 8.03 16.38 8.05 16.5 8.15C16.6 8.23 16.63 8.34 16.64 8.42C16.63 8.48 16.65 8.66 16.64 8.8Z" fill="#0088cc"/>
-          </svg>
-        </div>
-
-        <!-- Instagram Icon -->
-        <div class="social-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7.8 2H16.2C19.4 2 22 4.6 22 7.8V16.2C22 17.7383 21.3889 19.2135 20.3012 20.3012C19.2135 21.3889 17.7383 22 16.2 22H7.8C4.6 22 2 19.4 2 16.2V7.8C2 6.26174 2.61107 4.78649 3.69878 3.69878C4.78649 2.61107 6.26174 2 7.8 2ZM7.6 4C6.64522 4 5.72955 4.37928 5.05442 5.05442C4.37928 5.72955 4 6.64522 4 7.6V16.4C4 18.39 5.61 20 7.6 20H16.4C17.3548 20 18.2705 19.6207 18.9456 18.9456C19.6207 18.2705 20 17.3548 20 16.4V7.6C20 5.61 18.39 4 16.4 4H7.6ZM17.25 5.5C17.5815 5.5 17.8995 5.6317 18.1339 5.86612C18.3683 6.10054 18.5 6.41848 18.5 6.75C18.5 7.08152 18.3683 7.39946 18.1339 7.63388C17.8995 7.8683 17.5815 8 17.25 8C16.9185 8 16.6005 7.8683 16.3661 7.63388C16.1317 7.39946 16 7.08152 16 6.75C16 6.41848 16.1317 6.10054 16.3661 5.86612C16.6005 5.6317 16.9185 5.5 17.25 5.5ZM12 7C13.3261 7 14.5979 7.52678 15.5355 8.46447C16.4732 9.40215 17 10.6739 17 12C17 13.3261 16.4732 14.5979 15.5355 15.5355C14.5979 16.4732 13.3261 17 12 17C10.6739 17 9.40215 16.4732 8.46447 15.5355C7.52678 14.5979 7 13.3261 7 12C7 10.6739 7.52678 9.40215 8.46447 8.46447C9.40215 7.52678 10.6739 7 12 7ZM12 9C11.2044 9 10.4413 9.31607 9.87868 9.87868C9.31607 10.4413 9 11.2044 9 12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12C15 11.2044 14.6839 10.4413 14.1213 9.87868C13.5587 9.31607 12.7956 9 12 9Z" fill="url(#instagram-gradient)"/>
-            <defs>
-              <linearGradient id="instagram-gradient" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#FD5949"/>
-                <stop offset="0.5" stop-color="#D6249F"/>
-                <stop offset="1" stop-color="#285AEB"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </div>
-    </footer>
+         <!-- Social Section -->
+{% include 'team14/public/social-section.html' %}
   </main>
+</div>
 </body>
 </html>
