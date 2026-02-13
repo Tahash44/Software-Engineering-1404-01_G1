@@ -415,7 +415,9 @@ def start_exam(request):
         return redirect('index')
 
     passage = random.choice(list(passages))
-    exam_duration = 30 * 60  # 1800 ثانیه
+
+    questions_qs = passage.questions.all().order_by('id')
+    exam_duration = questions_qs.count() * 75
 
     session = UserSession.objects.create(
         user_id=str(request.user.id),
@@ -424,8 +426,6 @@ def start_exam(request):
         start_time=timezone.now(),
         exam_duration=exam_duration
     )
-
-    questions_qs = passage.questions.all().order_by('id')
 
     questions_data = []
     for q in questions_qs:
